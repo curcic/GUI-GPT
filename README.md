@@ -19,4 +19,4 @@ This is a simple GUI chatbot built in Python using PyQt5 and OpenAI's GPT-3 API.
 A GUI window will appear where you can type in messages and receive responses from the chatbot. The chatbot uses OpenAI's text-davinci-003 engine to generate responses.
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the GPL 3.0 License - see the LICENSE file for details.
