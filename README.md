@@ -6,6 +6,10 @@ This is a simple GUI chatbot built in Python using PyQt5 and OpenAI's GPT-3 API.
 
   `git clone https://github.com/curcic/GUI-GPT-3.git`
 
+- Install dependencies with:
+
+	`pip install openai PyQt5`
+
 - Get your OpenAI API key here
 
   https://platform.openai.com/account/api-keys
