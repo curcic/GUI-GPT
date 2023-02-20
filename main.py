@@ -26,13 +26,13 @@ class ChatWindow(QtWidgets.QWidget):
         self.setWindowTitle("GUI-GPT-3")
         self.setGeometry(50, 50, 600, 400)
 
-        self.setWindowIcon(QtGui.QIcon('icon.png'))
+        self.setWindowIcon(QtGui.QIcon('resources/icon.png'))
 
         self.chat_log = QtWidgets.QTextEdit(self)
         self.chat_log.setReadOnly(True)
         self.chat_input = QtWidgets.QLineEdit(self)
 
-        send_icon = QtGui.QIcon('send.png')
+        send_icon = QtGui.QIcon('resources/send.png')
         self.send_button = QtWidgets.QPushButton(send_icon, "Send", self)
         self.send_button.clicked.connect(self.send_message)
 
@@ -71,7 +71,7 @@ class ChatWindow(QtWidgets.QWidget):
 app = QtWidgets.QApplication([])
 window = ChatWindow()
 
-app_icon = QtGui.QIcon('icon.png')
+app_icon = QtGui.QIcon('resources/icon.png')
 app.setWindowIcon(app_icon)
 
 window.show()
