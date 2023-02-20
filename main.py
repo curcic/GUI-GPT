@@ -98,6 +98,7 @@ class ChatWindow(QtWidgets.QWidget):
         self.tab_widget = QtWidgets.QTabWidget(self)
         self.tab_widget.setTabsClosable(True)
         self.tab_widget.tabCloseRequested.connect(self.close_tab)
+        self.tab_widget.tabCloseRequested.connect(self.check_tab_count)
 
         self.new_tab_button = QtWidgets.QPushButton("New Chat Tab", self)
         self.new_tab_button.clicked.connect(self.add_new_tab)
@@ -121,6 +122,10 @@ class ChatWindow(QtWidgets.QWidget):
         widget = self.tab_widget.widget(index)
         widget.deleteLater()
         self.tab_widget.removeTab(index)
+
+    def check_tab_count(self):
+        if self.tab_widget.count() == 0:
+            QtWidgets.QApplication.quit()
 
     def get_api_key(self):
         config = configparser.ConfigParser()
