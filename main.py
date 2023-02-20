@@ -1,6 +1,7 @@
 import openai
 import sys
 from PyQt5 import QtWidgets, QtGui
+from datetime import datetime
 
 from test_api import is_api_key_valid
 
@@ -36,10 +37,18 @@ class ChatWindow(QtWidgets.QWidget):
         self.send_button = QtWidgets.QPushButton(send_icon, "Send", self)
         self.send_button.clicked.connect(self.send_message)
 
+        export_icon = QtGui.QIcon('resources/export.png')
+        self.export_button = QtWidgets.QPushButton(export_icon, "Export Chat", self)
+        self.export_button.clicked.connect(self.export_chat)
+
         self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.addWidget(self.chat_log)
         self.layout.addWidget(self.chat_input)
-        self.layout.addWidget(self.send_button)
+
+        button_layout = QtWidgets.QHBoxLayout()
+        button_layout.addWidget(self.send_button)
+        button_layout.addWidget(self.export_button)
+        self.layout.addLayout(button_layout)
 
         self.chat_input.setFocus()
 
@@ -66,6 +75,19 @@ class ChatWindow(QtWidgets.QWidget):
             self.chat_log.append("Error: " + str(e))
 
         self.chat_log.setReadOnly(True)
+
+    def export_chat(self):
+        now = datetime.now()
+        timestamp = now.strftime("%Y-%m-%d-%H-%M-%S")
+        file_name = f"chat_{timestamp}.txt"
+
+        try:
+            with open(file_name, "w") as f:
+                f.write(self.chat_log.toPlainText())
+            QtWidgets.QMessageBox.information(self, "Export Successful", f"The chat has been exported to {file_name}.")
+        except Exception as e:
+            QtWidgets.QMessageBox.critical(self, "Export Error",
+                                           f"An error occurred while exporting the chat: {str(e)}")
 
 
 app = QtWidgets.QApplication([])
