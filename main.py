@@ -20,16 +20,22 @@ class ChatWindow(QtWidgets.QWidget):
         self.api_key = self.get_api_key_from_text_box()
 
         if not is_api_key_valid(self.api_key):
+            QtWidgets.QMessageBox.critical(self, "Invalid API Key", "The API key entered is invalid.")
             sys.exit()
 
-        self.setWindowTitle("GUI GPT-3")
+        self.setWindowTitle("GUI-GPT-3")
         self.setGeometry(50, 50, 600, 400)
+
+        # Set the window icon
+        self.setWindowIcon(QtGui.QIcon('icon.png'))
 
         self.chat_log = QtWidgets.QTextEdit(self)
         self.chat_log.setReadOnly(True)
         self.chat_input = QtWidgets.QLineEdit(self)
 
-        self.send_button = QtWidgets.QPushButton("Send", self)
+        # Set the send button icon
+        send_icon = QtGui.QIcon('send.png')
+        self.send_button = QtWidgets.QPushButton(send_icon, "Send", self)
         self.send_button.clicked.connect(self.send_message)
 
         self.layout = QtWidgets.QVBoxLayout(self)
@@ -66,5 +72,10 @@ class ChatWindow(QtWidgets.QWidget):
 
 app = QtWidgets.QApplication([])
 window = ChatWindow()
+
+# Set the application icon
+app_icon = QtGui.QIcon('icon.png')
+app.setWindowIcon(app_icon)
+
 window.show()
 app.exec_()
