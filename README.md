@@ -1,7 +1,7 @@
 # GUI-GPT-3
 ## Notice
 This repository is in no way associated with OpenAI.
-OpenAI holds all the rights to the tools and API's used in this repository.
+OpenAI holds all the rights to the tools and APIs used in this repository.
 
 ------------
 
