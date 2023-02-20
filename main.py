@@ -1,5 +1,5 @@
-import openai
 import sys
+import openai
 from PyQt5 import QtWidgets, QtGui
 from datetime import datetime
 import configparser
@@ -12,13 +12,11 @@ class Constants:
     API_ENGINE = "text-davinci-003"
 
 
-class ChatWindow(QtWidgets.QWidget):
-    def __init__(self):
+class ChatTab(QtWidgets.QWidget):
+    def __init__(self, api_key):
         super().__init__()
 
-        self.setWindowTitle("GUI-GPT-3")
-        self.setGeometry(50, 50, 600, 400)
-        self.setWindowIcon(QtGui.QIcon('resources/icon.png'))
+        self.api_key = api_key
 
         self.chat_log = QtWidgets.QTextEdit(self)
         self.chat_log.setReadOnly(True)
@@ -26,11 +24,11 @@ class ChatWindow(QtWidgets.QWidget):
         self.chat_input = QtWidgets.QLineEdit(self)
         self.chat_input.returnPressed.connect(self.send_message)
 
-        send_icon = QtGui.QIcon('resources/send.png')
+        send_icon = QtGui.QIcon("resources/send.png")
         self.send_button = QtWidgets.QPushButton(send_icon, "Send", self)
         self.send_button.clicked.connect(self.send_message)
 
-        export_icon = QtGui.QIcon('resources/export.png')
+        export_icon = QtGui.QIcon("resources/export.png")
         self.export_button = QtWidgets.QPushButton(export_icon, "Export Chat", self)
         self.export_button.clicked.connect(self.export_chat)
 
@@ -45,31 +43,10 @@ class ChatWindow(QtWidgets.QWidget):
 
         self.chat_input.setFocus()
 
-        self.load_api_key()
-
-    def load_api_key(self):
-        self.config = configparser.ConfigParser()
-        self.config.read("config.ini")
-        self.api_key = self.config.get("API", "key", fallback="")
-        if not self.api_key or not is_api_key_valid(self.api_key):
-            self.api_key = self.get_api_key_from_text_box()
-            if not is_api_key_valid(self.api_key):
-                QtWidgets.QMessageBox.critical(self, "Invalid API Key", "The API key entered is invalid.")
-                sys.exit()
-            self.config["API"] = {"key": self.api_key}
-            with open("config.ini", "w") as configfile:
-                self.config.write(configfile)
-
-    def get_api_key_from_text_box(self):
-        api_key, ok = QtWidgets.QInputDialog.getText(self, "OpenAI API Key",
-                                                     "Enter your OpenAI API key:", QtWidgets.QLineEdit.Normal, "")
-        if ok:
-            return api_key
-        else:
-            raise ValueError("API key not provided")
-
     def send_message(self):
         message = self.chat_input.text()
+        if not message:
+            return
         self.chat_input.clear()
         self.chat_log.setReadOnly(True)
         self.chat_log.append(f"You: {message}")
@@ -99,16 +76,83 @@ class ChatWindow(QtWidgets.QWidget):
         try:
             with open(file_name, "w") as f:
                 f.write(self.chat_log.toPlainText())
-            QtWidgets.QMessageBox.information(self, "Export Successful", f"The chat has been exported to {file_name}.")
+            QtWidgets.QMessageBox.information(
+                self, "Export Successful", f"The chat has been exported to {file_name}."
+            )
         except Exception as e:
-            QtWidgets.QMessageBox.critical(self, "Export Error",
-                                           f"An error occurred while exporting the chat: {str(e)}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                "Export Error",
+                f"An error occurred while exporting the chat: {str(e)}",
+            )
+
+
+class ChatWindow(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("GUI-GPT-3")
+        self.setGeometry(50, 50, 600, 400)
+        self.setWindowIcon(QtGui.QIcon("resources/icon.png"))
+
+        self.tab_widget = QtWidgets.QTabWidget(self)
+        self.tab_widget.setTabsClosable(True)
+        self.tab_widget.tabCloseRequested.connect(self.close_tab)
+
+        self.new_tab_button = QtWidgets.QPushButton("New Chat Tab", self)
+        self.new_tab_button.clicked.connect(self.add_new_tab)
+
+        layout = QtWidgets.QVBoxLayout(self)
+        layout.addWidget(self.tab_widget)
+        layout.addWidget(self.new_tab_button)
+
+        self.tab_count = 0
+        self.add_new_tab()
+
+    def add_new_tab(self):
+        self.tab_count += 1
+        api_key = self.get_api_key()
+        if api_key:
+            chat_tab = ChatTab(api_key)
+            index = self.tab_widget.addTab(chat_tab, f"Chat {self.tab_count}")
+            self.tab_widget.setCurrentIndex(index)
+
+    def close_tab(self, index):
+        widget = self.tab_widget.widget(index)
+        widget.deleteLater()
+        self.tab_widget.removeTab(index)
+
+    def get_api_key(self):
+        config = configparser.ConfigParser()
+        config.read("config.ini")
+        api_key = config.get("API", "key", fallback="")
+        while not api_key or not is_api_key_valid(api_key):
+            api_key, ok = QtWidgets.QInputDialog.getText(
+                self,
+                "OpenAI API Key",
+                "Enter your OpenAI API key:",
+                QtWidgets.QLineEdit.Normal,
+                "",
+            )
+            if not ok:
+                sys.exit()
+            if is_api_key_valid(api_key):
+                config["API"] = {"key": api_key}
+                with open("config.ini", "w") as configfile:
+                    config.write(configfile)
+            else:
+                QtWidgets.QMessageBox.warning(
+                    self,
+                    "Invalid API Key",
+                    "The API key you entered is invalid. Please try again.",
+                )
+        return api_key
 
 
 app = QtWidgets.QApplication([])
 window = ChatWindow()
 
-app_icon = QtGui.QIcon('resources/icon.png')
+app_icon = QtGui.QIcon("resources/icon.png")
 app.setWindowIcon(app_icon)
 
 window.show()
