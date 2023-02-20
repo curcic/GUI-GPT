@@ -1,3 +1,4 @@
+[![](https://raw.githubusercontent.com/curcic/GUI-GPT-3/main/resources/icon.png)](http://openai.com)
 # GUI-GPT-3
 ## Notice
 This repository is in no way associated with OpenAI.
