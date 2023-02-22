@@ -46,10 +46,12 @@ class ChatTab(QtWidgets.QWidget):
         self.max_tokens_label = QtWidgets.QLabel("Max Tokens:")
         self.max_tokens_input = QtWidgets.QLineEdit("4000", self)
 
-        self.send_button = QtWidgets.QPushButton("Send", self)
+        send_icon = QtGui.QIcon("resources/send.png")
+        self.send_button = QtWidgets.QPushButton(send_icon, "Send", self)
         self.send_button.clicked.connect(self.send_message)
 
-        self.export_button = QtWidgets.QPushButton("Export Chat", self)
+        export_icon = QtGui.QIcon("resources/export.png")
+        self.export_button = QtWidgets.QPushButton(export_icon, "Export Chat", self)
         self.export_button.clicked.connect(self.export_chat)
 
         self.layout = QtWidgets.QVBoxLayout(self)
@@ -179,7 +181,8 @@ class ChatWindow(QtWidgets.QWidget):
         self.tab_widget.tabCloseRequested.connect(self.close_tab)
         self.tab_widget.tabCloseRequested.connect(self.check_tab_count)
 
-        self.new_tab_button = QtWidgets.QPushButton("New Chat Tab", self)
+        tab_icon = QtGui.QIcon("resources/tab.png")
+        self.new_tab_button = QtWidgets.QPushButton(tab_icon, "New Chat Tab", self)
         self.new_tab_button.clicked.connect(self.add_new_tab)
 
         layout = QtWidgets.QVBoxLayout(self)
