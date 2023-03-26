@@ -139,7 +139,7 @@ class ChatTab(QtWidgets.QWidget):
             response_text = response["choices"][0]["text"]
 
             response_cursor = self.chat_log.textCursor()
-            response_cursor.insertHtml("<span style='color: red'>GPT-3: </span>")
+            response_cursor.insertHtml("<span style='color: red'>GPT: </span>")
             response_cursor.insertText(f"{response_text}\n\n")
 
         except Exception as e:
@@ -172,7 +172,7 @@ class ChatWindow(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("GUI-GPT-3")
+        self.setWindowTitle("GUI-GPT")
         self.setGeometry(50, 50, 800, 600)
         self.setWindowIcon(QtGui.QIcon("resources/icon.png"))
 
