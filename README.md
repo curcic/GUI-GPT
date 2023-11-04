@@ -28,7 +28,7 @@ This is a simple GUI chatbot built in Python using PyQt5 and OpenAI's GPT API. T
 
 - Paste the OpenAI API key that you generated earlier
 
-A GUI window will appear where you can type in messages and receive responses from the chatbot. The chatbot uses OpenAI's Davinci, Curie, Babbage and Ada models to generate responses.
+A GUI window will appear where you can type in messages and receive responses from the chatbot. The chatbot uses OpenAI's GPT-4 and GPT-3.5 models to generate responses.
 
 ## References
 Icons downloaded from [uxwing.com](https://uxwing.com "uxwing.com")

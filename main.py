@@ -6,12 +6,11 @@ import configparser
 
 from test_api import is_api_key_valid
 
-
 class ChatTab(QtWidgets.QWidget):
     def __init__(self, api_key):
         super().__init__()
 
-        self.selected_api = "text-davinci-003"
+        self.selected_api = "gpt-4"
         self.api_key = api_key
 
         self.chat_log = QtWidgets.QTextEdit(self)
@@ -23,28 +22,20 @@ class ChatTab(QtWidgets.QWidget):
         self.api_group_box = QtWidgets.QGroupBox("API")
         self.api_group_box_layout = QtWidgets.QVBoxLayout(self.api_group_box)
 
-        self.api_davinci_radio_button = QtWidgets.QRadioButton("Davinci")
-        self.api_davinci_radio_button.setChecked(True)
-        self.api_davinci_radio_button.toggled.connect(self.api_radio_button_toggled)
-        self.api_group_box_layout.addWidget(self.api_davinci_radio_button)
+        self.api_gpt4_radio_button = QtWidgets.QRadioButton("GPT-4")
+        self.api_gpt4_radio_button.setChecked(True)
+        self.api_gpt4_radio_button.toggled.connect(self.api_radio_button_toggled)
+        self.api_group_box_layout.addWidget(self.api_gpt4_radio_button)
 
-        self.api_curie_radio_button = QtWidgets.QRadioButton("Curie")
-        self.api_curie_radio_button.toggled.connect(self.api_radio_button_toggled)
-        self.api_group_box_layout.addWidget(self.api_curie_radio_button)
-
-        self.api_babbage_radio_button = QtWidgets.QRadioButton("Babbage")
-        self.api_babbage_radio_button.toggled.connect(self.api_radio_button_toggled)
-        self.api_group_box_layout.addWidget(self.api_babbage_radio_button)
-
-        self.api_ada_radio_button = QtWidgets.QRadioButton("Ada")
-        self.api_ada_radio_button.toggled.connect(self.api_radio_button_toggled)
-        self.api_group_box_layout.addWidget(self.api_ada_radio_button)
+        self.api_gpt35turbo_radio_button = QtWidgets.QRadioButton("GPT-3.5 Turbo")
+        self.api_gpt35turbo_radio_button.toggled.connect(self.api_radio_button_toggled)
+        self.api_group_box_layout.addWidget(self.api_gpt35turbo_radio_button)
 
         self.temperature_label = QtWidgets.QLabel("Temperature:")
         self.temperature_input = QtWidgets.QLineEdit("0.5", self)
 
         self.max_tokens_label = QtWidgets.QLabel("Max Tokens:")
-        self.max_tokens_input = QtWidgets.QLineEdit("4000", self)
+        self.max_tokens_input = QtWidgets.QLineEdit("8192", self)
 
         send_icon = QtGui.QIcon("resources/send.png")
         self.send_button = QtWidgets.QPushButton(send_icon, "Send", self)
@@ -73,14 +64,10 @@ class ChatTab(QtWidgets.QWidget):
         self.chat_input.setFocus()
 
     def api_radio_button_toggled(self):
-        if self.api_davinci_radio_button.isChecked():
-            self.selected_api = "text-davinci-003"
-        elif self.api_curie_radio_button.isChecked():
-            self.selected_api = "text-curie-001"
-        elif self.api_babbage_radio_button.isChecked():
-            self.selected_api = "text-babbage-001"
-        elif self.api_ada_radio_button.isChecked():
-            self.selected_api = "text-ada-001"
+        if self.api_gpt4_radio_button.isChecked():
+            self.selected_api = "gpt-4"
+        elif self.api_gpt35turbo_radio_button.isChecked():
+            self.selected_api = "gpt-3.5-turbo"
 
     def send_message(self):
         message = self.chat_input.text()
@@ -94,28 +81,28 @@ class ChatTab(QtWidgets.QWidget):
         user_cursor.insertText(f"\n{message}\n\n")
 
         max_tokens_text = self.max_tokens_input.text()
-        if self.api_davinci_radio_button.isChecked():
+        if self.api_gpt4_radio_button.isChecked():
             if (
                 not max_tokens_text.isdigit()
                 or int(max_tokens_text) < 0
-                or int(max_tokens_text) > 4000
+                or int(max_tokens_text) > 8192
             ):
                 QtWidgets.QMessageBox.warning(
                     self,
                     "Invalid Max Tokens",
-                    "Please enter a valid max tokens value between 0 and 4000.",
+                    "Please enter a valid max tokens value between 0 and 8193.",
                 )
                 return
         else:
             if (
                 not max_tokens_text.isdigit()
                 or int(max_tokens_text) < 0
-                or int(max_tokens_text) > 2046
+                or int(max_tokens_text) > 4097
             ):
                 QtWidgets.QMessageBox.warning(
                     self,
                     "Invalid Max Tokens",
-                    "Please enter a valid max tokens value between 0 and 2046.",
+                    "Please enter a valid max tokens value between 0 and 4098.",
                 )
                 return
 
