@@ -90,7 +90,7 @@ class ChatTab(QtWidgets.QWidget):
                 QtWidgets.QMessageBox.warning(
                     self,
                     "Invalid Max Tokens",
-                    "Please enter a valid max tokens value between 0 and 8193.",
+                    "Please enter a valid max tokens value between 0 and 8192.",
                 )
                 return
         else:
@@ -102,7 +102,7 @@ class ChatTab(QtWidgets.QWidget):
                 QtWidgets.QMessageBox.warning(
                     self,
                     "Invalid Max Tokens",
-                    "Please enter a valid max tokens value between 0 and 4098.",
+                    "Please enter a valid max tokens value between 0 and 4097.",
                 )
                 return
 
