@@ -84,25 +84,25 @@ class ChatTab(QtWidgets.QWidget):
         if self.api_gpt4_radio_button.isChecked():
             if (
                 not max_tokens_text.isdigit()
-                or int(max_tokens_text) < 0
+                or int(max_tokens_text) < 1
                 or int(max_tokens_text) > 8192
             ):
                 QtWidgets.QMessageBox.warning(
                     self,
                     "Invalid Max Tokens",
-                    "Please enter a valid max tokens value between 0 and 8192.",
+                    "Please enter a valid max tokens value between 1 and 8192.",
                 )
                 return
         else:
             if (
                 not max_tokens_text.isdigit()
-                or int(max_tokens_text) < 0
+                or int(max_tokens_text) < 1
                 or int(max_tokens_text) > 4097
             ):
                 QtWidgets.QMessageBox.warning(
                     self,
                     "Invalid Max Tokens",
-                    "Please enter a valid max tokens value between 0 and 4097.",
+                    "Please enter a valid max tokens value between 1 and 4097.",
                 )
                 return
 
